@@ -1,51 +1,39 @@
 /********头文件声明区********/
 
-
-
 #include "tinyOS.h"
 #include "ARMCM3.h"
+
+
 tTask * currentTask;//当前任务
 tTask * nextTask;//下个任务
 tTask * idleTask;//空闲任务
-tTask * taskTable[2];//任务栈
+tBitmap taskPrioBitmap;
+tList taskTable[TINYOS_PRO_COUNT];//任务栈
 
 uint8_t schedLockCount;//调度锁
+tList tTaskDelayedList;
 
 
 
 /********函数区********/
 
-
-void tTaskSched ();
-void delay (int count);//软延时函数
-
-void tTaskInit (tTask *task, void (*entry) (void *), void *param, tTaskStack *stack)
+//获取任务列表中优先级最高的任务
+tTask* tTaskHighestReady(void)
 {
-	*(--stack) = (unsigned long) (1 << 24);
-	*(--stack) = (unsigned long) entry;
-	*(--stack) = (unsigned long) 0x14;
-	*(--stack) = (unsigned long) 0x12;
-	*(--stack) = (unsigned long) 0x3;
-	*(--stack) = (unsigned long) 0x2;
-	*(--stack) = (unsigned long) 0x1;
-	*(--stack) = (unsigned long) param;
-	
-	*(--stack) = (unsigned long) 0x11;
-	*(--stack) = (unsigned long) 0x10;
-	*(--stack) = (unsigned long) 0x9;
-	*(--stack) = (unsigned long) 0x8;
-	*(--stack) = (unsigned long) 0x7;
-	*(--stack) = (unsigned long) 0x6;
-	*(--stack) = (unsigned long) 0x5;
-	*(--stack) = (unsigned long) 0x4;
-	
-	task->stack = stack;
-	task->delayTicks = 0;
+	uint32_t highestPrio = tBitmapGetFirstSet(&taskPrioBitmap);
+	tNode* node = tListFirst(&taskTable[highestPrio]);
+	return tNodeParent(node, tTask, linkNode);
 }
 
 void tTaskSchedInit ()//初始化调度锁
 {
+	int i;
 	schedLockCount = 0;
+	tBitmapInit(&taskPrioBitmap);
+	for(i=0; i<TINYOS_PRO_COUNT; ++i)
+	{
+		tListInit(&taskTable[i]);
+	}
 }
 
 void tTaskSchedDisable ()//调度锁上锁
@@ -74,8 +62,35 @@ void tTaskSchedEnable ()//调度锁解锁
 	}
 }
 
+//就绪表的插入
+void tTaskSchedRdy (tTask * task)
+{
+	tListAddFirst(&(taskTable[task->prio]),&(task->linkNode));
+	tBitmapSet(&taskPrioBitmap, task->prio);
+}
+
+//就绪表的删除
+void tTaskSchedUnRdy (tTask * task)
+{
+	tListRemove(&(taskTable[task->prio]),&(task->linkNode));
+	if(tListCount(&taskTable[task->prio]) == 0)
+	{
+		tBitmapClear(&taskPrioBitmap, task->prio);
+	} 
+}
+
+void tTaskSchedRemove(tTask* task)
+{
+	tListRemove(&(taskTable[task->prio]),&(task->linkNode));
+	if(tListCount(&taskTable[task->prio]) == 0)
+	{
+		tBitmapClear(&taskPrioBitmap, task->prio);
+	}
+}
+
 void tTaskSched ()//任务切换调度函数
 {
+	tTask *tempTask;
 	uint32_t status = tTaskEnterCritical();
 	
 	if(schedLockCount > 0)
@@ -83,198 +98,101 @@ void tTaskSched ()//任务切换调度函数
 		tTaskExitCritical(status);
 	}
 	
-	if(currentTask == idleTask)
+	tempTask = tTaskHighestReady();
+	if(tempTask != currentTask)
 	{
-		if(taskTable[0]->delayTicks == 0)
-		{
-			nextTask = taskTable[0];
-		}
-		else if(taskTable[1]->delayTicks == 0)
-		{
-			nextTask = taskTable[1];
-		}
-		else
-		{
-			tTaskExitCritical(status);
-			return;
-		}
-	} 
-	else 
+		nextTask = tempTask;
+		tTaskSwitch();
+	}
+	
+	tTaskExitCritical(status);
+}
+
+void tTaskDealyedInit()
+{
+	tListInit(&tTaskDelayedList);
+}
+
+//延时列表的插入
+void tTimeTaskWait (tTask * task, uint32_t ticks)
+{
+	task->delayTicks = ticks;
+	tListAddLast(&tTaskDelayedList, &(task->delayNode));
+	task->state |= TINYOS_TASK_STATE_DELAYED;
+}
+
+//延时列表的删除
+void tTimeTaskWakeUp (tTask * task)
+{
+	tListRemove(&tTaskDelayedList, &(task->delayNode));
+	task->state &= ~TINYOS_TASK_STATE_DELAYED;
+}
+
+void tTimeTaskRemove(tTask* task)
+{
+	tListRemove(&tTaskDelayedList, &(task->delayNode));
+}
+
+//递减各任务的延时计数器
+void tTaskSystemTickHandler ()
+{
+	uint32_t status = tTaskEnterCritical();
+	
+	tNode* node;
+	for(node = tTaskDelayedList.headNode.nextNode; node!=&(tTaskDelayedList.headNode); node = node->nextNode)
 	{
-		if(currentTask == taskTable[0])
+		tTask* task = tNodeParent(node, tTask, delayNode);
+		if (--task->delayTicks == 0)
 		{
-			if(taskTable[1]->delayTicks == 0)
+			if(task->waitEvent)
 			{
-				nextTask = taskTable[1];
+				tEventRemoveTask(task, (void*)0,tErrorTimeout);
 			}
-			else if(currentTask->delayTicks !=0)
-			{
-				nextTask = idleTask;
-			}
-			else
-			{
-				tTaskExitCritical(status);
-				return;
-			}
-		}
-		else if(currentTask == taskTable[1])
-		{
-			if(taskTable[1]->delayTicks == 0)
-			{
-				nextTask = taskTable[0];
-			}
-			else if(currentTask->delayTicks != 0)
-			{
-				nextTask = idleTask;
-			}
-			else
-			{
-				tTaskExitCritical(status);
-				return;
-			}
+			tTimeTaskWakeUp(task);
+			tTaskSchedRdy(task);
 		}
 	}
 	
-	tTaskSwitch();
-	
-	tTaskExitCritical(status);
-}
-
-void tTaskSystemTickHandler ()//递减各任务的延时计数器
-{
-	int i;
-	
-	uint32_t status = tTaskEnterCritical();
-	for(i = 0; i < 2; i++)
+	if (--currentTask->slice == 0)
 	{
-		if (taskTable[i]->delayTicks > 0)
+		if (tListCount(&taskTable[currentTask->prio]) > 0)
 		{
-			taskTable[i]->delayTicks--;
+			tListRemoveFirst(&taskTable[currentTask->prio]);
+			tListAddLast(&taskTable[currentTask->prio], &(currentTask->linkNode));
+			
+			currentTask->slice = TINYOS_SLICE_MAX;
 		}
 	}
+
 	tTaskExitCritical(status);
 	tTaskSched();
 }
-
-void tTaskDelay (uint32_t delay)//延时&切换函数
-{
-	uint32_t status = tTaskEnterCritical();
-	currentTask->delayTicks = delay;
-	tTaskExitCritical(status);
-	tTaskSched();
-}
-
-void tSetSysTickPeriod (uint32_t ms)//SysTick的初始化函数，参数为毫秒
-{
-	SysTick->LOAD = ms * SystemCoreClock / 1000 - 1;//初始化SysTick的寄存器
-	NVIC_SetPriority(SysTick_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
-	SysTick->VAL = 0;//递减寄存器
-	SysTick->CTRL = //控制寄存器
-		SysTick_CTRL_CLKSOURCE_Msk |
-		SysTick_CTRL_TICKINT_Msk |
-		SysTick_CTRL_ENABLE_Msk ;
-}
-
-void SysTick_Handler ()//SysTick的中断处理函数
-{
-	tTaskSystemTickHandler();
-}
-
 
 
 
 
 /********任务区********/
-
-
-
-tTask tTask1;//任务1
-tTaskStack task1Env[1024];//任务1赋值
-
-tTask tTask2;//任务2
-tTaskStack task2Env[1024];//任务2赋值
-
 tTask tTaskIdle;//空闲任务
-tTaskStack idleTaskEnv[1024];//空闲任务赋值
+tTaskStack idleTaskEnv[TINYOS_IDLETASK_STACK_SIZE];//空闲任务赋值
 
 //空闲任务模块
 void idleTaskEntry (void * param)
 {
-	for(;;)
-	{
-		
-	}
+	for(;;){}
 }
-
-
-//任务1模块
-int task1Flag;//任务1的标志位
-int firstset;//第一个插入的位图标志位
-void task1Entry (void * param) 
-{
-	int i;
-	
-	tBitmap bitmap;
-	
-	
-	tBitmapInit(&bitmap);
-	  
-	
-	for(i = tBitmapPosCount() - 1; i >= 0; i--)//测试获取第一位
-	{
-		tBitmapSet(&bitmap, i);
-		
-		firstset = tBitmapGetFirstSet(&bitmap);
-	}
-	
-	for(i = 0; i < tBitmapPosCount(); i++)
-	{
-		tBitmapClear(&bitmap, i);
-		firstset = tBitmapGetFirstSet(&bitmap);
-	}
-	tSetSysTickPeriod(10);
-	for(;;)
-	{
-		task1Flag = 0;
-		tTaskDelay(1);
-		task1Flag = 1;
-		tTaskDelay(1);
-	}
-}
-
-//任务2模块
-int task2Flag;//任务2的标志位
-void task2Entry (void * param) {
-	for(;;)
-	{
-		task2Flag = 0;
-		tTaskDelay(1);
-		task2Flag = 1;
-		tTaskDelay(1);
-		
-	}
-}
-
-void delay (int count)
-{
-	while (--count > 0);
-}
-
 
 
 int main ()//主函数
 {
-	tTaskInit(&tTask1, task1Entry, (void*)0x11111111, &task1Env[1024]);
-	tTaskInit(&tTask2, task2Entry, (void*)0x22222222, &task2Env[1024]);
+	tTaskSchedInit();
+	tTaskDealyedInit();
 	
+	tInitApp();
 	
-	taskTable[0] = &tTask1;
-	taskTable[1] = &tTask2;
-	
-	nextTask = taskTable[0];
-	
-	tTaskInit(&tTaskIdle, idleTaskEntry, (void*)0, &idleTaskEnv[1024]);
+	tTaskInit(&tTaskIdle, idleTaskEntry, (void*)0, TINYOS_PRO_COUNT-1, &idleTaskEnv[TINYOS_IDLETASK_STACK_SIZE]);
 	idleTask = &tTaskIdle;
+	
+	nextTask = tTaskHighestReady();
 	
 	tTaskRunFirst();
 	
