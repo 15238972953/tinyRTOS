@@ -7,10 +7,16 @@
 #include "tconfig.h"
 #include "tEvent.h"
 #include "tTask.h"
+#include "tSem.h"
+#include "tMbox.h"
+#include "tMemBlock.h"
 
 typedef enum _tError{
 	tErrorNoError = 0,
-	tErrorTimeout = 1,
+	tErrorTimeout,
+	tErrorResourseUnavailable,
+	tErrorDel,
+	tErrorResourseFull,
 }tError;
 
 

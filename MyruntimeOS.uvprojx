@@ -451,6 +451,36 @@
               <FileType>5</FileType>
               <FilePath>.\Source\tTask.h</FilePath>
             </File>
+            <File>
+              <FileName>tSem.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\tSem.h</FilePath>
+            </File>
+            <File>
+              <FileName>tSem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\tSem.c</FilePath>
+            </File>
+            <File>
+              <FileName>tMbox.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\tMbox.h</FilePath>
+            </File>
+            <File>
+              <FileName>tMbox.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\tMbox.c</FilePath>
+            </File>
+            <File>
+              <FileName>tMemBlock.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\tMemBlock.h</FilePath>
+            </File>
+            <File>
+              <FileName>tMemBlock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\tMemBlock.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

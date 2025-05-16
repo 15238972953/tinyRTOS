@@ -5,3 +5,6 @@
 .\objects\ttask.o: Source\tconfig.h
 .\objects\ttask.o: Source\tEvent.h
 .\objects\ttask.o: Source\tTask.h
+.\objects\ttask.o: Source\tSem.h
+.\objects\ttask.o: Source\tMbox.h
+.\objects\ttask.o: Source\tMemBlock.h

@@ -5,6 +5,9 @@
 .\objects\main.o: source\tconfig.h
 .\objects\main.o: source\tEvent.h
 .\objects\main.o: source\tTask.h
+.\objects\main.o: source\tSem.h
+.\objects\main.o: source\tMbox.h
+.\objects\main.o: source\tMemBlock.h
 .\objects\main.o: D:\keil\new install\ARM\CMSIS\5.8.0\Device\ARM\ARMCM3\Include\ARMCM3.h
 .\objects\main.o: D:\keil\new install\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm3.h
 .\objects\main.o: D:\keil\new install\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h

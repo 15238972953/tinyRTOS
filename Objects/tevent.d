@@ -5,3 +5,6 @@
 .\objects\tevent.o: Source\tconfig.h
 .\objects\tevent.o: Source\tEvent.h
 .\objects\tevent.o: Source\tTask.h
+.\objects\tevent.o: Source\tSem.h
+.\objects\tevent.o: Source\tMbox.h
+.\objects\tevent.o: Source\tMemBlock.h
