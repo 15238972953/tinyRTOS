@@ -154,7 +154,7 @@
           <Type>0</Type>
           <LineNumber>28</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>3280</Address>
+          <Address>3224</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,39 +168,87 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>22</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>0</Address>
+          <LineNumber>44</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>3288</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\Source\app.c</Filename>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>D:\绉嬫嫑鍑嗗\tinyRTOS\Source\app.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\MyruntimeOS\Source/app.c\44</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>41</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>0</Address>
+          <LineNumber>25</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>3214</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\Source\app.c</Filename>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>D:\绉嬫嫑鍑嗗\tinyRTOS\Source\app.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\MyruntimeOS\Source/app.c\25</Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
           <Type>0</Type>
-          <LineNumber>55</LineNumber>
+          <LineNumber>32</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>3246</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>D:\绉嬫嫑鍑嗗\tinyRTOS\Source\app.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\MyruntimeOS\Source/app.c\32</Expression>
+        </Bp>
+        <Bp>
+          <Number>4</Number>
+          <Type>0</Type>
+          <LineNumber>43</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>3272</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>D:\绉嬫嫑鍑嗗\tinyRTOS\Source\app.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\MyruntimeOS\Source/app.c\43</Expression>
+        </Bp>
+        <Bp>
+          <Number>5</Number>
+          <Type>0</Type>
+          <LineNumber>45</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>3300</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>D:\绉嬫嫑鍑嗗\tinyRTOS\Source\app.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\MyruntimeOS\Source/app.c\45</Expression>
+        </Bp>
+        <Bp>
+          <Number>6</Number>
+          <Type>0</Type>
+          <LineNumber>27</LineNumber>
           <EnabledFlag>0</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -214,9 +262,9 @@
           <Expression></Expression>
         </Bp>
         <Bp>
-          <Number>4</Number>
+          <Number>7</Number>
           <Type>0</Type>
-          <LineNumber>66</LineNumber>
+          <LineNumber>81</LineNumber>
           <EnabledFlag>0</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -280,6 +328,11 @@
           <count>9</count>
           <WinNumber>1</WinNumber>
           <ItemText>task2Flag</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>flagGroup1</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -348,22 +401,22 @@
         <Wi>
           <IntNumber>0</IntNumber>
           <FirstString>`task1Flag</FirstString>
-          <SecondString>FF000000000000000000E0C10000C0FFFFFFDF41010000000000000000000000000000007461736B31466C616700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000D03F16000000000000000000000000000000000000004E060000</SecondString>
+          <SecondString>FF000000000000000000E0C10000C0FFFFFFDF41010000000000000000000000000000007461736B31466C616700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000D03F13000000000000000000000000000000000000004E060000</SecondString>
         </Wi>
         <Wi>
           <IntNumber>1</IntNumber>
           <FirstString>`task2Flag</FirstString>
-          <SecondString>008000000000C0FFFFFFDFC10000C0FFFFFFDF41000000000000000000000000000000007461736B32466C616700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000002000000000000000000D03F16000000000000000000000000000000000000004E060000</SecondString>
+          <SecondString>008000000000C0FFFFFFDFC10000C0FFFFFFDF41010000000000000000000000000000007461736B32466C616700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002000000000000000000D03F13000000000000000000000000000000000000004E060000</SecondString>
         </Wi>
         <Wi>
           <IntNumber>2</IntNumber>
           <FirstString>`task3Flag</FirstString>
-          <SecondString>00000000000000000000E0C10000C0FFFFFFDF41010000000000000000000000000000007461736B33466C616700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000003000000000000000000D03F1600000000000000000000000000000000000000F8040000</SecondString>
+          <SecondString>00000000000000000000E0C10000C0FFFFFFDF41010000000000000000000000000000007461736B33466C616700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000003000000000000000000D03F1300000000000000000000000000000000000000F8040000</SecondString>
         </Wi>
         <Wi>
           <IntNumber>3</IntNumber>
           <FirstString>`task4Flag</FirstString>
-          <SecondString>00000000000000000000E0C10000C0FFFFFFDF41010000000000000000000000000000007461736B34466C616700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000004000000000000000000D03F1600000000000000000000000000000000000000E8040000</SecondString>
+          <SecondString>00000000000000000000E0C10000C0FFFFFFDF41010000000000000000000000000000007461736B34466C616700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000004000000000000000000D03F1300000000000000000000000000000000000000E8040000</SecondString>
         </Wi>
       </LogicAnalyzers>
     </TargetOption>
@@ -612,6 +665,30 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\Source\tMemBlock.c</PathWithFileName>
       <FilenameWithoutPath>tMemBlock.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>21</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Source\tFlagGroup.h</PathWithFileName>
+      <FilenameWithoutPath>tFlagGroup.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>22</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Source\tFlagGroup.c</PathWithFileName>
+      <FilenameWithoutPath>tFlagGroup.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

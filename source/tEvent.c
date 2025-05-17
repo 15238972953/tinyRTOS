@@ -52,6 +52,28 @@ tTask* tEventWakeUp(tEvent * event, void * msg, uint32_t result)
 	return task;
 }
 
+//唤醒事件控制块队列中头部的事件
+tTask * tEventWakeUpTask (tEvent * event, tTask * task, void * msg, uint32_t result)
+{
+    uint32_t status = tTaskEnterCritical();
+
+    tListRemove(&event->waitList, &task->linkNode);
+    task->waitEvent = (tEvent *)0;
+    task->eventMsg = msg;
+    task->waitEventResult = result;
+    task->state &= ~TINYOS_TASK_WAIT_MASK;
+
+    if(task->delayTicks != 0)
+    {
+        tTimeTaskWakeUp(task);
+    }
+    tTaskSchedRdy(task);
+
+    tTaskExitCritical(status);
+		
+	return task;
+}
+
 //将某一任务从事件控制块的等待队列中移除
 void tEventRemoveTask (tTask * task, void * msg, uint32_t result)
 {

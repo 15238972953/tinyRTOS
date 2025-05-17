@@ -8,6 +8,7 @@
 .\objects\tcpu.o: Source\tSem.h
 .\objects\tcpu.o: Source\tMbox.h
 .\objects\tcpu.o: Source\tMemBlock.h
+.\objects\tcpu.o: Source\tFlagGroup.h
 .\objects\tcpu.o: D:\keil\new install\ARM\CMSIS\5.8.0\Device\ARM\ARMCM3\Include\ARMCM3.h
 .\objects\tcpu.o: D:\keil\new install\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm3.h
 .\objects\tcpu.o: D:\keil\new install\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h

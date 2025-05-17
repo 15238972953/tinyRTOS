@@ -22,12 +22,42 @@ Dialog DLL:      TCM.DLL V1.53.0.0
  
 <h2>Project:</h2>
 D:\秋招准备\tinyRTOS\MyruntimeOS.uvprojx
-Project File Date:  05/16/2025
+Project File Date:  05/17/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\keil\new install\ARM\ARMCC\Bin'
 Build target 'Target 1'
-".\Objects\MyruntimeOS.axf" - 0 Error(s), 0 Warning(s).
+compiling app.c...
+Source\tLib.h(45): warning:  #1-D: last line of file ends without a newline
+  #endif
+Source\tconfig.h(8): warning:  #1-D: last line of file ends without a newline
+  #endif
+Source\tTask.h(56): warning:  #1-D: last line of file ends without a newline
+  #endif
+Source\tEvent.h(28): warning:  #1-D: last line of file ends without a newline
+  #endif
+Source\tSem.h(28): warning:  #1-D: last line of file ends without a newline
+  #endif
+Source\tMemBlock.h(30): warning:  #1-D: last line of file ends without a newline
+  #endif
+Source\tinyOS.h(28): warning:  #1295-D: Deprecated declaration tTaskSchedInit - give arg types
+  void tTaskSchedInit ();//初始化调度锁
+Source\tinyOS.h(30): warning:  #1295-D: Deprecated declaration tTaskSchedDisable - give arg types
+  void tTaskSchedDisable ();//调度锁上锁
+Source\tinyOS.h(31): warning:  #1295-D: Deprecated declaration tTaskSchedEnable - give arg types
+  void tTaskSchedEnable ();//调度锁解锁
+Source\tinyOS.h(44): warning:  #1295-D: Deprecated declaration tTaskSystemTickHandler - give arg types
+  void tTaskSystemTickHandler ();
+Source\tinyOS.h(49): warning:  #1295-D: Deprecated declaration tTaskSched - give arg types
+  void tTaskSched ();
+Source\tinyOS.h(56): warning:  #1-D: last line of file ends without a newline
+  #endif
+Source\app.c(83): warning:  #1-D: last line of file ends without a newline
+  }
+Source\app.c: 13 warnings, 0 errors
+linking...
+Program Size: Code=2436 RO-data=1248 RW-data=40 ZI-data=24840  
+".\Objects\MyruntimeOS.axf" - 0 Error(s), 13 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -48,10 +78,10 @@ Package Vendor: ARM
    * Component: ARM::CMSIS:CORE:5.5.0
 
    * Component: ARM::Device:Startup:C Startup:2.0.3
-      Include file:  Device\ARM\ARMCM3\Include\ARMCM3.h
       Source file:   Device\ARM\ARMCM3\Source\system_ARMCM3.c
+      Include file:  Device\ARM\ARMCM3\Include\ARMCM3.h
       Source file:   Device\ARM\ARMCM3\Source\startup_ARMCM3.c
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

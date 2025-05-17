@@ -71,7 +71,7 @@ void tMemBlockNotify(tMemBlock * memBlock, uint8_t * mem)
 
     if(tEventWaitCount(&memBlock->event) > 0)
     {
-        tTask * task = tEventWakeUp(&memBlock->event, (void *)0, tErrorNoError);
+        tTask * task = tEventWakeUp(&memBlock->event, (void *)mem, tErrorNoError);
         if(task->prio < currentTask->prio)
         {
             tTaskSched;
@@ -85,3 +85,32 @@ void tMemBlockNotify(tMemBlock * memBlock, uint8_t * mem)
     tTaskExitCritical(status);
 }
 
+//´æ´¢¿éµÄ×´Ì¬²éÑ¯
+void tMemBlockGetInfo(tMemBlock * memBlock, tMemBlockInfo * info)
+{
+    uint32_t status = tTaskEnterCritical();
+
+    info->count = tListCount(&memBlock->blockList);
+    info->maxCount = memBlock->maxCount;
+    info->blockSize = memBlock->blockSize;
+    info->taskCount = tEventWaitCount(&memBlock->event);
+
+    tTaskExitCritical(status);
+}
+
+//´æ´¢¿éµÄÉ¾³ý
+uint32_t tMemBlockDestroy(tMemBlock * memBlock)
+{
+    uint32_t status = tTaskEnterCritical();
+
+    uint32_t count = tEventRemoveAll(&memBlock->event, (void *)0, tErrorDel);
+
+
+    tTaskExitCritical(status);
+
+    if(count > 0)
+    {
+        tTaskSched();
+    }
+    return count;
+}
