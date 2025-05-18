@@ -9,6 +9,10 @@
 .\objects\main.o: source\tMbox.h
 .\objects\main.o: source\tMemBlock.h
 .\objects\main.o: source\tFlagGroup.h
+.\objects\main.o: source\tMutex.h
+.\objects\main.o: source\tTimer.h
+.\objects\main.o: source\tHooks.h
+.\objects\main.o: source\tinyOS.h
 .\objects\main.o: D:\keil\new install\ARM\CMSIS\5.8.0\Device\ARM\ARMCM3\Include\ARMCM3.h
 .\objects\main.o: D:\keil\new install\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm3.h
 .\objects\main.o: D:\keil\new install\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h

@@ -11,6 +11,11 @@
 #include "tMbox.h"
 #include "tMemBlock.h"
 #include "tFlagGroup.h"
+#include "tMutex.h"
+#include "tTimer.h"
+#include "tHooks.h"
+
+#define TICK_PER_SEC  (1000 / TINYOS_SYSTICK_MS)
 
 typedef enum _tError{
 	tErrorNoError = 0,
@@ -18,6 +23,7 @@ typedef enum _tError{
 	tErrorResourseUnavailable,
 	tErrorDel,
 	tErrorResourseFull,
+	tErrorNoOwner,
 }tError;
 
 
@@ -50,7 +56,7 @@ void tTaskSched ();
 void tTimeTaskRemove(tTask* task);
 void tTaskSchedRemove(tTask* task);
 
-
+float tCpuUsageGet(void);
 
 
 #endif

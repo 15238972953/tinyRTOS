@@ -9,3 +9,7 @@
 .\objects\tsem.o: Source\tMbox.h
 .\objects\tsem.o: Source\tMemBlock.h
 .\objects\tsem.o: Source\tFlagGroup.h
+.\objects\tsem.o: Source\tMutex.h
+.\objects\tsem.o: Source\tTimer.h
+.\objects\tsem.o: Source\tHooks.h
+.\objects\tsem.o: Source\tinyOS.h

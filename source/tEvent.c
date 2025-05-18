@@ -10,7 +10,7 @@ void tEventWait (tEvent * event, tTask * task, void * msg, uint32_t state, uint3
 {
     uint32_t status = tTaskEnterCritical();
 
-    task->state |= state;
+    task->state |= state << 16;
     task->waitEvent = event;
     task->eventMsg = msg;
     task->waitEventResult = tErrorNoError;

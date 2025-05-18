@@ -9,6 +9,10 @@
 .\objects\switch.o: source\tMbox.h
 .\objects\switch.o: source\tMemBlock.h
 .\objects\switch.o: source\tFlagGroup.h
+.\objects\switch.o: source\tMutex.h
+.\objects\switch.o: source\tTimer.h
+.\objects\switch.o: source\tHooks.h
+.\objects\switch.o: source\tinyOS.h
 .\objects\switch.o: D:\keil\new install\ARM\CMSIS\5.8.0\Device\ARM\ARMCM3\Include\ARMCM3.h
 .\objects\switch.o: D:\keil\new install\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm3.h
 .\objects\switch.o: D:\keil\new install\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h

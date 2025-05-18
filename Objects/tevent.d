@@ -9,3 +9,7 @@
 .\objects\tevent.o: Source\tMbox.h
 .\objects\tevent.o: Source\tMemBlock.h
 .\objects\tevent.o: Source\tFlagGroup.h
+.\objects\tevent.o: Source\tMutex.h
+.\objects\tevent.o: Source\tTimer.h
+.\objects\tevent.o: Source\tHooks.h
+.\objects\tevent.o: Source\tinyOS.h

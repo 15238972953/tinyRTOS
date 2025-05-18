@@ -13,37 +13,33 @@ tTaskStack task3Env[1024];//任务3赋值
 tTask tTask4;//任务4
 tTaskStack task4Env[1024];//任务4赋值
 
-tFlagGroup flagGroup;
-
 
 int task1Flag;
 void task1Entry (void * param) 
 {
-	tSetSysTickPeriod(10);
-
-	tFlagGroupInit(&flagGroup, 0xFF);
 	for(;;)
 	{
+
 		task1Flag = 0;
 		tTaskDelay(1);
 		task1Flag = 1;
 		tTaskDelay(1);
-		tFlagGroupNotify(&flagGroup, 0, 0x6);
+
 	}
 }
+
 
 int task2Flag;
 void task2Entry (void * param) 
 {
-	uint32_t resultFlags;
+
 	for(;;)
 	{
-		tFlagGroupWait(&flagGroup, TFLAGGROUP_CLEAR_ALL, 0x4, &resultFlags, 10);
-		tFlagGroupNoWaitGet(&flagGroup, TFLAGGROUP_CLEAR_ALL, 0x3,&resultFlags);
 		task2Flag = 0;
 		tTaskDelay(1);
 		task2Flag = 1;
 		tTaskDelay(1);
+
 	}
 }
 
@@ -56,7 +52,6 @@ void task3Entry (void * param)
 		tTaskDelay(1);
 		task3Flag = 1;
 		tTaskDelay(1);
-		
 	}
 }
 
@@ -73,9 +68,9 @@ void task4Entry (void * param) {
 
 void tInitApp (void)
 {
-	tTaskInit(&tTask1, task1Entry, (void*)0x11111111, 0, &task1Env[1024]);
-	tTaskInit(&tTask2, task2Entry, (void*)0x22222222, 1, &task2Env[1024]);
-	tTaskInit(&tTask3, task3Entry, (void*)0x22222222, 1, &task3Env[1024]);
-	tTaskInit(&tTask4, task4Entry, (void*)0x44444444, 1, &task4Env[1024]);
+	tTaskInit(&tTask1, task1Entry, (void*)0x11111111, 0, task1Env, sizeof(task1Env));
+	tTaskInit(&tTask2, task2Entry, (void*)0x22222222, 1, task2Env, sizeof(task2Env));
+	tTaskInit(&tTask3, task3Entry, (void*)0x22222222, 1, task3Env, sizeof(task3Env));
+	tTaskInit(&tTask4, task4Entry, (void*)0x44444444, 1, task4Env, sizeof(task4Env));
 
 }

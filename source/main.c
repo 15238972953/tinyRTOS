@@ -13,7 +13,15 @@ tList taskTable[TINYOS_PRO_COUNT];//任务栈
 uint8_t schedLockCount;//调度锁
 tList tTaskDelayedList;
 
+uint32_t tickCount;
+uint32_t idleCount;
+uint32_t idleMaxCount;
 
+#if TINYOS_ENABLE_CPUUSAGE_STAT == 1
+static void initCpuUsageStat();
+static void checkCpuUsage(void);
+static void cpuUsageSyncWithSysTick(void);
+#endif
 
 /********函数区********/
 
@@ -102,13 +110,16 @@ void tTaskSched ()//任务切换调度函数
 	if(tempTask != currentTask)
 	{
 		nextTask = tempTask;
+#if TINYOS_ENABLE_HOOKS == 1
+		tHooksTaskSwitch(currentTask, nextTask);
+#endif
 		tTaskSwitch();
 	}
 	
 	tTaskExitCritical(status);
 }
 
-void tTaskDealyedInit()
+void tTaskDelayedInit()
 {
 	tListInit(&tTaskDelayedList);
 }
@@ -131,6 +142,11 @@ void tTimeTaskWakeUp (tTask * task)
 void tTimeTaskRemove(tTask* task)
 {
 	tListRemove(&tTaskDelayedList, &(task->delayNode));
+}
+
+void tTimeTickInit(void)
+{
+	tickCount = 0;
 }
 
 //递减各任务的延时计数器
@@ -163,33 +179,126 @@ void tTaskSystemTickHandler ()
 			currentTask->slice = TINYOS_SLICE_MAX;
 		}
 	}
-
+	tickCount++;
+	
+#if TINYOS_ENABLE_CPUUSAGE_STAT == 1
+	checkCpuUsage();
+#endif
+	
 	tTaskExitCritical(status);
+	
+#if TINYOS_ENABLE_TIMER == 1
+	tTimerModuleTickNotify();
+#endif 
+	
+#if TINYOS_ENABLE_HOOKS == 1
+	tHooksSysTick();
+#endif
 	tTaskSched();
 }
+#if TINYOS_ENABLE_CPUUSAGE_STAT == 1
+static float cpuUsage;
+static uint32_t enableCpuUsageState;
+
+static void initCpuUsageStat(void)
+{
+	idleCount = 0;
+	idleMaxCount = 0;
+	cpuUsage = 0.0f;
+	enableCpuUsageState = 0;
+}
+
+static void checkCpuUsage(void)
+{
+	if(enableCpuUsageState == 0)
+	{
+		enableCpuUsageState = 1;
+		tickCount = 0;
+		return;
+	}
+	
+	if(tickCount == TICK_PER_SEC)
+	{
+		idleMaxCount = idleCount;
+		idleCount = 0;
+		
+		tTaskSchedEnable();
+	}
+	else if(tickCount % TICK_PER_SEC == 0)
+	{
+		cpuUsage = 100 - (idleCount * 100.0 / idleMaxCount);
+		idleCount = 0;
+	}
+}
+
+static void cpuUsageSyncWithSusTick(void)
+{
+	while(enableCpuUsageState == 0)
+	{
+		;;
+	}
+}
+
+float tCpuUsageGet(void)
+{
+	float usage = 0;
+	uint32_t status = tTaskEnterCritical();
+	usage = cpuUsage;
+	tTaskExitCritical(status);
+	return usage;
+}
+#endif
 
 
+tTask tTaskIdle;
+tTaskStack idleTaskEnv[TINYOS_IDLETASK_STACK_SIZE];
 
 
-/********任务区********/
-tTask tTaskIdle;//空闲任务
-tTaskStack idleTaskEnv[TINYOS_IDLETASK_STACK_SIZE];//空闲任务赋值
-
-//空闲任务模块
 void idleTaskEntry (void * param)
 {
-	for(;;){}
+	tTaskSchedDisable();
+	tInitApp();
+	
+#if TINYOS_ENABLE_TIMER ==1
+	tTimerInitTask();
+#endif
+	
+	tSetSysTickPeriod(TINYOS_SYSTICK_MS);
+
+#if TINYOS_ENABLE_CPUUSAGE_STAT == 1
+	cpuUsageSyncWithSusTick();
+#endif
+	
+	for(;;)
+	{
+		uint32_t status = tTaskEnterCritical();
+		idleCount++;
+		tTaskExitCritical(status);
+
+#if TINYOS_ENABLE_HOOKS == 1
+	tHooksCpuIdle();
+#endif
+		
+	}
 }
 
 
 int main ()//主函数
 {
 	tTaskSchedInit();
-	tTaskDealyedInit();
+	tTaskDelayedInit();
 	
-	tInitApp();
+	#if TINYOS_ENABLE_TIMER == 1
+		tTimerModuleInit();
+	#endif
 	
-	tTaskInit(&tTaskIdle, idleTaskEntry, (void*)0, TINYOS_PRO_COUNT-1, &idleTaskEnv[TINYOS_IDLETASK_STACK_SIZE]);
+	tTimeTickInit();
+
+#if TINYOS_ENABLE_CPUUSAGE_STAT == 1
+	initCpuUsageStat();
+#endif
+	
+	tTaskInit(&tTaskIdle, idleTaskEntry, (void*)0, TINYOS_PRO_COUNT-1, idleTaskEnv, TINYOS_IDLETASK_STACK_SIZE);
 	idleTask = &tTaskIdle;
 	
 	nextTask = tTaskHighestReady();

@@ -14,6 +14,8 @@ typedef uint32_t tTaskStack;
 
 typedef struct _tTask {
 	tTaskStack * stack;
+	uint32_t* stackBase;
+	uint32_t stackSize;
 	tNode linkNode;
 	uint32_t delayTicks;//ÈíÑÓÊ±Æ÷¼ÆÊýÆ÷
 	tNode delayNode;
@@ -41,9 +43,12 @@ typedef struct _tTaskinfo
 	uint32_t state;
 	uint32_t slice;
 	uint32_t suspendCount;
+	uint32_t stackSize;
+	uint32_t stackFree;
+	
 }tTaskInfo;
 
-void tTaskInit (tTask *task, void (*entry) (void *), void *param, uint32_t prio, tTaskStack *stack);
+void tTaskInit (tTask *task, void (*entry) (void *), void *param, uint32_t prio, tTaskStack *stack, uint32_t size);
 void tTaskSuspend (tTask * task);
 void tTaskWakeUp (tTask * task);
 void tTaskGetInfo (tTask * task, tTaskInfo * info);

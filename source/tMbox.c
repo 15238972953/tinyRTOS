@@ -1,5 +1,6 @@
 #include "tinyOS.h"
 
+#if TINYOS_ENABLE_MBOX == 1
 void tMboxInit(tMbox * mbox, void ** msgBuffer, uint32_t maxCount)
 {
     tEventInit(&mbox->event, tEventTypeMbox);
@@ -145,3 +146,4 @@ void tMboxGetInfo(tMbox * mbox, tMboxInfo * info)
 
     tTaskExitCritical(status);
 }
+#endif

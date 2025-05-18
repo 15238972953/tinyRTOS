@@ -1,5 +1,6 @@
 #include "tinyOS.h"
 
+#if TINYOS_ENABLE_FLAGGROUP == 1
 void tFlagGroupInit(tFlagGroup * flagGroup, uint32_t flags)
 {
     tEventInit(&flagGroup->event, tEventTypeFlagGroup);
@@ -145,3 +146,5 @@ uint32_t tFlagGroupDestroy(tFlagGroup * flagGroup)
     }
     return count;
 }
+
+#endif
