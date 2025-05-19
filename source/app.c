@@ -1,6 +1,7 @@
 #include "tinyOS.h"
 
 
+
 tTask tTask1;//任务1
 tTaskStack task1Env[1024];//任务1赋值
 
@@ -13,26 +14,28 @@ tTaskStack task3Env[1024];//任务3赋值
 tTask tTask4;//任务4
 tTaskStack task4Env[1024];//任务4赋值
 
-
 int task1Flag;
 void task1Entry (void * param) 
 {
+	tSetSysTickPeriod(10);
 	for(;;)
 	{
-
+//		void* p = rt_malloc(128);
+//		if(p != NULL)
+//		{
+//			memset(p, 0, 128);
+//			rt_free(p);
+//		}
 		task1Flag = 0;
 		tTaskDelay(1);
 		task1Flag = 1;
 		tTaskDelay(1);
-
 	}
 }
-
 
 int task2Flag;
 void task2Entry (void * param) 
 {
-
 	for(;;)
 	{
 		task2Flag = 0;

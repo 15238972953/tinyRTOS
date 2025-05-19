@@ -14,6 +14,7 @@
 #include "tMutex.h"
 #include "tTimer.h"
 #include "tHooks.h"
+#include "tlsf/tlsf.h"
 
 #define TICK_PER_SEC  (1000 / TINYOS_SYSTICK_MS)
 

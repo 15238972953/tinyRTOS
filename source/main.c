@@ -282,11 +282,19 @@ void idleTaskEntry (void * param)
 	}
 }
 
+#if TINYOS_ENABLE_TLSF == 1
+#define TLSF_POOL_SIZE (8*256)
+static uint8_t tlsf_memory_pool[TLSF_POOL_SIZE];
+#endif
 
 int main ()//Ö÷º¯Êý
 {
 	tTaskSchedInit();
 	tTaskDelayedInit();
+	
+#if TINYOS_ENABLE_TLSF == 1
+	tlsf_handle = tlsf_create_with_pool(tlsf_memory_pool, TLSF_POOL_SIZE);
+#endif
 	
 	#if TINYOS_ENABLE_TIMER == 1
 		tTimerModuleInit();

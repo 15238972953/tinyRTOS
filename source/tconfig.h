@@ -18,4 +18,6 @@
 #define TINYOS_ENABLE_TIMER         1
 #define TINYOS_ENABLE_CPUUSAGE_STAT 0
 #define TINYOS_ENABLE_HOOKS         1
+#define TINYOS_ENABLE_TLSF          1
+
 #endif
